@@ -22,5 +22,19 @@ def get_mnist(data_dir='./data/mnist/',batch_size=128):
 
 
 
+def get_20newsgroup(data_dir, batch_size=128, device = "cuda"):
+    with open(data_dir, "rb") as f:
+        dic = pickle.load(f)
+        X = dic["X"]
+        y = dic["y"]
+    train_loader = []
+    #X -= X.min(1, keepdim = True)[0]
+    #X /= X.max(1, keepdim = True)[0]
+    for i in range(len(X) // batch_size):
+        train_loader.append([X[i*batch_size: (i+1) * batch_size].float(), y[i*batch_size:(i+1)*batch_size]])
+    return train_loader, batch_size
+
+
+
 
 

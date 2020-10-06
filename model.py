@@ -31,7 +31,7 @@ def block(in_c,out_c):
     return layers
 
 class Encoder(nn.Module):
-    def __init__(self,input_dim=784,inter_dims=[500,500,2000],hid_dim=10):
+    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=10):
         super(Encoder,self).__init__()
 
         self.encoder=nn.Sequential(
@@ -53,7 +53,7 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self,input_dim=784,inter_dims=[500,500,2000],hid_dim=10):
+    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=10):
         super(Decoder,self).__init__()
 
         self.decoder=nn.Sequential(
