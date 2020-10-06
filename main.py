@@ -40,12 +40,13 @@ if __name__ == '__main__':
 
 
 
-    DL,_=get_mnist(args.datadir,args.batch_size)
+    #DL,_=get_mnist(args.datadir,args.batch_size)
+    DL,_=get_20newsgroup("tfidf_embedding.pk",batch_size = 128)
 
     vade=VaDE(args)
     if args.cuda:
         vade=vade.cuda()
-        vade=nn.DataParallel(vade,device_ids=range(4))
+        vade=nn.DataParallel(vade,device_ids=range(1))
 
     vade.module.pre_train(DL,pre_epoch=50)
 
