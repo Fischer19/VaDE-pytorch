@@ -12,7 +12,7 @@ from sklearn.decomposition import PCA
 import sklearn
 
 # evaluation:
-def transformation(model, data, rate = 1.5):
+def transformation(model, data, rate = 2):
     mean, _ = model.encoder(torch.from_numpy(data).float())
     pred = model.predict(torch.from_numpy(data).float())
     cluster_means = model.mu_c[pred]
