@@ -2,7 +2,7 @@ import torch
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader,TensorDataset
-
+import pickle
 
 
 def get_mnist(data_dir='./data/mnist/',batch_size=128):

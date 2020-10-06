@@ -31,7 +31,7 @@ def block(in_c,out_c):
     return layers
 
 class Encoder(nn.Module):
-    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=10):
+    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=20):
         super(Encoder,self).__init__()
 
         self.encoder=nn.Sequential(
@@ -53,7 +53,7 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=10):
+    def __init__(self,input_dim=2000,inter_dims=[500,500,2000],hid_dim=20):
         super(Decoder,self).__init__()
 
         self.decoder=nn.Sequential(
@@ -61,7 +61,7 @@ class Decoder(nn.Module):
             *block(inter_dims[-1],inter_dims[-2]),
             *block(inter_dims[-2],inter_dims[-3]),
             nn.Linear(inter_dims[-3],input_dim),
-            nn.Sigmoid()
+            #nn.Sigmoid()
         )
 
 
@@ -105,7 +105,7 @@ class VaDE(nn.Module):
                     x_=self.decoder(z)
                     loss=Loss(x,x_)
 
-                    L+=loss.detach().cpu().numpy()
+                    L+=loss.detach().cpu().numpy() * 10
 
                     opti.zero_grad()
                     loss.backward()
@@ -172,8 +172,9 @@ class VaDE(nn.Module):
             z=torch.randn_like(z_mu)*torch.exp(z_sigma2_log/2)+z_mu
 
             x_pro=self.decoder(z)
-
-            L_rec+=F.binary_cross_entropy(x_pro,x)
+            L_rec += F.binary_cross_entropy_with_logits(x_pro, x)
+            #L_rec += F.mse_loss(x_pro, x)
+            #L_rec+=F.binary_cross_entropy(x_pro,x)
 
         L_rec/=L
 

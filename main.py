@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
 
     #DL,_=get_mnist(args.datadir,args.batch_size)
-    DL,_=get_20newsgroup("tfidf_embedding.pk",batch_size = 128)
+    DL,_=get_20newsgroup("tfidf_embedding.pk",batch_size = args.batch_size)
 
     vade=VaDE(args)
     if args.cuda:
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     vade.module.pre_train(DL,pre_epoch=50)
 
 
-    opti=Adam(vade.parameters(),lr=2e-3)
+    opti=Adam(vade.parameters(),lr=5e-4)
     lr_s=StepLR(opti,step_size=10,gamma=0.95)
 
 
