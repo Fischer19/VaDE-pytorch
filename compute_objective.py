@@ -112,7 +112,7 @@ max = compute_objective_gt(2000, rootnode, y[:2000]).numpy()
 """
 Z = linkage(transformed_mean[:2000], "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
-print("Trans VaDE:", compute_objective_gt(2000, rootnode, y[:2000]).numpy() / max)
+print("Trans VaDE:", compute_objective_gt(2000, rootnode, y[:2000]) / max)
 
 """
 Z = linkage(y[:2000].reshape(-1,1), "ward")
@@ -121,7 +121,7 @@ max = compute_objective_gt(2000, rootnode, y[:2000]).numpy()
 """
 Z = linkage(mean[:2000], "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
-print("VaDE:", compute_objective_gt(2000, rootnode, y[:2000]).numpy() / max)
+print("VaDE:", compute_objective_gt(2000, rootnode, y[:2000]) / max)
 
 
 
@@ -135,7 +135,7 @@ max = compute_objective_gt(2000, rootnode, y[:2000]).numpy()
 """
 Z = linkage(pca_data, "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
-print("PCA:", compute_objective_gt(2000, rootnode, y[:2000]).numpy() / max)
+print("PCA:", compute_objective_gt(2000, rootnode, y[:2000]) / max)
 
 """
 Z = linkage(y[:2000].reshape(-1,1), "ward")
@@ -144,6 +144,6 @@ max = compute_objective_gt(2000, rootnode, y[:2000]).numpy()
 """
 Z = linkage(origin_data, "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
-print("origin:", compute_objective_gt(2000, rootnode, y[:2000]).numpy() / max)
+print("origin:", compute_objective_gt(2000, rootnode, y[:2000]) / max)
 
 
