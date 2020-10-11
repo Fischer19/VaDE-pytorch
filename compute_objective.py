@@ -100,11 +100,34 @@ vade=VaDE(args)
 
 vade.pre_train(DL,pre_epoch=50)
 
-max = 1
-
 mean, _ = vade.encoder(X)
 mean = mean.detach().numpy()
 transformed_mean = transformation(vade, X.numpy())
+
+pca = PCA(n_components = 10)
+pca_data = pca.fit_transform(X[:args.num])
+origin_data = X[:args.num]
+
+print("-" * 25 + "Computing Dendrogram Purity" + "-" * 25)
+
+Z = linkage(transformed_mean[:args.num], "ward")
+print("Trans VaDE:", compute_purity(Z, y[:args.num]), args.nClusters)
+
+Z = linkage(mean[:args.num], "ward")
+print("VaDE:", compute_purity(Z, y[:args.num]), args.nClusters)
+
+Z = linkage(pca_data, "ward")
+print("PCA:", compute_purity(Z, y[:args.num]), args.nClusters)
+
+Z = linkage(origin_data, "ward")
+print("Origin:", compute_purity(Z, y[:args.num]), args.nClusters)
+
+
+
+print("-" * 25 + "Computing MW objective" + "-" * 25)
+max = 1
+
+
 """
 Z = linkage(y[:2000].reshape(-1,1), "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
@@ -124,10 +147,6 @@ rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
 print("VaDE:", compute_objective_gt(args.num, rootnode, y[:args.num]) / max)
 
 
-
-pca = PCA(n_components = 10)
-pca_data = pca.fit_transform(X[:args.num])
-origin_data = X[:args.num]
 """
 Z = linkage(y[:2000].reshape(-1,1), "ward")
 rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
