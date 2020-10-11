@@ -75,8 +75,8 @@ class Decoder(nn.Module):
 class VaDE(nn.Module):
     def __init__(self,args):
         super(VaDE,self).__init__()
-        self.encoder=Encoder()
-        self.decoder=Decoder()
+        self.encoder=Encoder(hid_dim = args.hid_dim)
+        self.decoder=Decoder(hid_dim = args.hid_dim)
 
         self.pi_=nn.Parameter(torch.FloatTensor(args.nClusters,).fill_(1)/args.nClusters,requires_grad=True)
         self.mu_c=nn.Parameter(torch.FloatTensor(args.nClusters,args.hid_dim).fill_(0),requires_grad=True)
@@ -88,7 +88,7 @@ class VaDE(nn.Module):
 
     def pre_train(self,dataloader,pre_epoch=10):
 
-        if  not os.path.exists('./pretrain_model.pk'):
+        if  not os.path.exists('./pretrain_model_h{}.pk'.format(self.args.hid_dim)):
 
             Loss=nn.MSELoss()
             opti=Adam(itertools.chain(self.encoder.parameters(),self.decoder.parameters()))
@@ -139,12 +139,12 @@ class VaDE(nn.Module):
             self.mu_c.data = torch.from_numpy(gmm.means_).cuda().float()
             self.log_sigma2_c.data = torch.log(torch.from_numpy(gmm.covariances_).cuda().float())
 
-            torch.save(self.state_dict(), './pretrain_model.pk')
+            torch.save(self.state_dict(), './pretrain_model_h{}.pk'.format(self.args.hid_dim))
 
         else:
 
 
-            self.load_state_dict(torch.load('./pretrain_model.pk'))
+            self.load_state_dict(torch.load('./pretrain_model_h{}.pk'.format(self.args.hid_dim)))
 
 
 
