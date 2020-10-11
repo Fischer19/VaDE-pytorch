@@ -273,7 +273,9 @@ def compute_purity(Z, target, target_num = 10):
     create_par(root, None)
     p = 0
     for i in range(target_num):
-        p += purity(root, i, target)
+        current_p = purity(root, i, target)
+        print("purity w.r.t target-{}: {}".format(i, current_p))
+        p += current_p
     return p/target_num
 
 
