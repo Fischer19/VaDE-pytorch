@@ -110,6 +110,21 @@ origin_data = X[:args.num]
 
 print("-" * 25 + "Computing Dendrogram Purity" + "-" * 25)
 
+from sklearn.metrics import normalized_mutual_info_score
+from sklearn.cluster import KMeans
+
+kmeans = KMeans(n_clusters=20, random_state=0).fit(origin_data)
+print("Origin KMeans NMI score:", normalized_mutual_info_score(kmeans.labels_, y[:args.num]))
+
+kmeans = KMeans(n_clusters=20, random_state=0).fit(pca_data)
+print("PCA KMeans NMI score:", normalized_mutual_info_score(kmeans.labels_, y[:args.num]))
+
+kmeans = KMeans(n_clusters=20, random_state=0).fit(transformed_mean[:args.num])
+print("Trans KMeans NMI score:", normalized_mutual_info_score(kmeans.labels_, y[:args.num]))
+
+kmeans = KMeans(n_clusters=20, random_state=0).fit(mean[:args.num])
+print("VaDE KMeans NMI score:", normalized_mutual_info_score(kmeans.labels_, y[:args.num]))
+"""
 Z = linkage(transformed_mean[:args.num], "ward")
 print("Trans VaDE:", compute_purity(Z, y[:args.num]), args.nClusters)
 
@@ -121,7 +136,7 @@ print("PCA:", compute_purity(Z, y[:args.num]), args.nClusters)
 
 Z = linkage(origin_data, "ward")
 print("Origin:", compute_purity(Z, y[:args.num]), args.nClusters)
-
+"""
 
 
 print("-" * 25 + "Computing MW objective" + "-" * 25)
