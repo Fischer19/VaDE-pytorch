@@ -108,6 +108,15 @@ pca = PCA(n_components = 10)
 pca_data = pca.fit_transform(X[:args.num])
 origin_data = X[:args.num]
 
+cluster_target = []
+for i in range(args.num):
+    cluster_target.append(similarity_matrix[target[i].numpy()])
+cluster_target = np.array(cluster_target)
+Z = linkage(cluster_target, "ward")
+rootnode, nodelist = scipy.cluster.hierarchy.to_tree(Z, rd=True)
+print("max MW objective:", compute_objective_gt(args.num, rootnode, y[:args.num]))
+
+
 print("-" * 25 + "Computing Dendrogram Purity" + "-" * 25)
 
 from sklearn.metrics import normalized_mutual_info_score
